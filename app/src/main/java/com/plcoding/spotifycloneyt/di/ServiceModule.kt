@@ -2,11 +2,13 @@ package com.plcoding.spotifycloneyt.di
 
 import android.content.Context
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.plcoding.spotifycloneyt.data.remote.MusicDatabase
+import com.plcoding.spotifycloneyt.exoplayer.FirebaseMusicSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +22,7 @@ object ServiceModule {
 
     @ServiceScoped
     @Provides
-    fun provideMusicDatabase() = MusicDatabase()
+    fun provideMusicDatabase(@ApplicationContext context: Context) = MusicDatabase(context)
 
     @ServiceScoped
     @Provides
@@ -34,7 +36,7 @@ object ServiceModule {
     fun provideExoPlayer(
         @ApplicationContext context: Context,
         audioAttributes: AudioAttributes
-    ) = SimpleExoPlayer.Builder(context).build().apply {
+    ) = ExoPlayer.Builder(context).build().apply {
         setAudioAttributes(audioAttributes, true)
         setHandleAudioBecomingNoisy(true)
     }
@@ -44,6 +46,13 @@ object ServiceModule {
     fun provideDataSourceFactory(
         @ApplicationContext context: Context
     ) = DefaultDataSourceFactory(context, Util.getUserAgent(context, "Spotify App"))
+
+    @ServiceScoped
+    @Provides
+    fun provideFirebaseMusicSource(
+        musicDatabase: MusicDatabase,
+        @ApplicationContext context: Context
+    ) = FirebaseMusicSource(musicDatabase, context)
 }
 
 

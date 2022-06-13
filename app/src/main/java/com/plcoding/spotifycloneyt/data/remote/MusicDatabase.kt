@@ -1,19 +1,28 @@
 package com.plcoding.spotifycloneyt.data.remote
 
-import android.util.Log
-import com.google.firebase.firestore.FirebaseFirestore
-import com.plcoding.spotifycloneyt.data.entities.Song
-import com.plcoding.spotifycloneyt.other.Constants.SONG_COLLECTION
-import kotlinx.coroutines.tasks.await
+import android.content.Context
+import com.example.techinnoverassessment.data.entities.ListOfSongs
+import com.example.techinnoverassessment.data.entities.ListOfSongsItem
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.plcoding.spotifycloneyt.R
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
+import javax.inject.Inject
 
-class MusicDatabase {
+class MusicDatabase @Inject constructor(context: Context) {
+    val gson: Gson = GsonBuilder().create()
+    val json: InputStream = context.resources.openRawResource(R.raw.songs)
 
-    private val firestore = FirebaseFirestore.getInstance()
-    private val songCollection = firestore.collection(SONG_COLLECTION)
 
-    suspend fun getAllSongs(): List<Song> {
+    fun getAllSongs(): List<ListOfSongsItem> {
         return try {
-            songCollection.get().await().toObjects(Song::class.java)
+            val listOfSongs = mutableListOf<ListOfSongsItem>()
+            val reader = BufferedReader(InputStreamReader(json))
+            val listFromJson: ListOfSongs = gson.fromJson(reader, ListOfSongs::class.java)
+            listOfSongs.addAll(listFromJson)
+            listOfSongs
         } catch(e: Exception) {
             emptyList()
         }
