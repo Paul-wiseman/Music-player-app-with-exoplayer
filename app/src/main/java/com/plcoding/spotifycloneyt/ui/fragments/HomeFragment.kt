@@ -70,7 +70,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     mainViewModel.readSongs.observe(viewLifecycleOwner){ listOfSongsEntity ->
                         songAdapter.songs = listOfSongsEntity.map { songEntity ->
                             songEntity.song
-                        }
+                        }.distinct()
                     }
                 }
             }

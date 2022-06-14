@@ -58,8 +58,10 @@ class MainActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 if(playbackState?.isPlaying == true) {
+
                     mainViewModel.playOrToggleSong(swipeSongAdapter.songs[position])
                 } else {
+
                     curPlayingSong = swipeSongAdapter.songs[position]
                 }
             }
@@ -98,6 +100,7 @@ class MainActivity : AppCompatActivity() {
     private fun switchViewPagerToCurrentSong(song: Song) {
         val newItemIndex = swipeSongAdapter.songs.indexOf(song)
         if (newItemIndex != -1) {
+            mainViewModel.saveSong(SongEntity(song))
             binding.vpSong.currentItem = newItemIndex
             curPlayingSong = song
         }
@@ -122,10 +125,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-//        mainViewModel.playbackState.observe(this){
-////           val pos: Long? = it?.currentPlaybackPosition
-//        }
 
         mainViewModel.curPlayingSong.observe(this) {
             if (it == null) return@observe

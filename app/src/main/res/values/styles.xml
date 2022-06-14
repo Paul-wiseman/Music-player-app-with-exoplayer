@@ -8,6 +8,7 @@
         <item name="android:textViewStyle">@style/PoppinsTextStyle</item>
         <item name="materialButtonStyle">@style/ButtonStyle</item>
         <item name="textInputStyle">@style/EditTextStyle</item>
+        <item name="android:statusBarColor">#1B262C</item>
     </style>
 
     <style name="EditTextStyle" parent="Widget.Design.TextInputLayout">
