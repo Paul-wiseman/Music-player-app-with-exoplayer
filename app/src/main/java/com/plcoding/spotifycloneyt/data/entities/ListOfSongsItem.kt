@@ -1,4 +1,4 @@
-package com.example.techinnoverassessment.data.entities
+package com.plcoding.spotifycloneyt.data.entities
 
 data class ListOfSongsItem(
     val album: String,

@@ -2,7 +2,7 @@ package com.plcoding.spotifycloneyt.data.remote
 
 import android.content.Context
 import com.example.techinnoverassessment.data.entities.ListOfSongs
-import com.example.techinnoverassessment.data.entities.ListOfSongsItem
+import com.plcoding.spotifycloneyt.data.entities.ListOfSongsItem
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.plcoding.spotifycloneyt.R

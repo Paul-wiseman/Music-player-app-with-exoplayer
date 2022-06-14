@@ -31,14 +31,15 @@ class FirebaseMusicSource @Inject constructor(
         songs = allSongs.map { song ->
             MediaMetadataCompat.Builder()
                 .putString(METADATA_KEY_ARTIST, song.artist)
+                .putString(METADATA_KEY_DISPLAY_SUBTITLE, "${song.artist_name} & ${song.name}")
                 .putString(METADATA_KEY_MEDIA_ID, song.id)
                 .putString(METADATA_KEY_TITLE, song.album)
                 .putString(METADATA_KEY_DISPLAY_TITLE, song.genre_name)
                 .putString(METADATA_KEY_DISPLAY_ICON_URI, song.artwork)
                 .putString(METADATA_KEY_MEDIA_URI, song.source)
                 .putString(METADATA_KEY_ALBUM_ART_URI, song.artwork)
-                .putString(METADATA_KEY_DISPLAY_SUBTITLE, song.name)
                 .putString(METADATA_KEY_DISPLAY_DESCRIPTION, song.name)
+                .putString(METADATA_KEY_AUTHOR, song.artist_name)
                 .build()
         }
         state = STATE_INITIALIZED

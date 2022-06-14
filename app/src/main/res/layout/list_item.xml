@@ -2,40 +2,67 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_marginBottom="16dp"
+    android:layout_marginTop="10dp"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/ivItemImage"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvPrimary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="3dp"
         android:layout_marginRight="16dp"
         android:gravity="center|left"
         android:text="Playlist Title"
-        android:layout_marginTop="8dp"
-        android:textSize="20sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivItemImage"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/cv_image_background"
+        app:layout_constraintTop_toTopOf="@+id/cv_image_background" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvSecondary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="100 Songs"
-        android:textSize="14sp"
+        android:textSize="12sp"
+        android:textColor="#80F9F8FF"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivItemImage"
+        app:layout_constraintStart_toEndOf="@+id/cv_image_background"
         app:layout_constraintTop_toBottomOf="@+id/tvPrimary" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_image_background"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:cardCornerRadius="95dp"
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/ivItemImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.16"
+        app:layout_constraintStart_toEndOf="@+id/tvPrimary"
+        app:layout_constraintTop_toTopOf="@+id/tvPrimary"
+        app:srcCompat="@drawable/ic_vertical_dots" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
