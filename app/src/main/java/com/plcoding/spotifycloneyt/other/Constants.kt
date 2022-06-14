@@ -12,4 +12,8 @@ object Constants {
 
     const val NOTIFICATION_CHANNEL_ID = "music"
     const val NOTIFICATION_ID = 1
+
+    // ROOM Database
+    const val DATABASE_NAME = "songs_database"
+    const val SONG_TABLE = "song_table"
 }

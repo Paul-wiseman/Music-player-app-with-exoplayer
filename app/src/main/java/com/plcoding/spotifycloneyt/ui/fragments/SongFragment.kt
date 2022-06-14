@@ -1,11 +1,14 @@
 package com.plcoding.spotifycloneyt.ui.fragments
 
+import android.content.Context
+import android.media.AudioManager
 import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class SongFragment : Fragment(R.layout.fragment_song) {
@@ -49,11 +53,12 @@ class SongFragment : Fragment(R.layout.fragment_song) {
         _binding = FragmentSongBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         subscribeToObservers()
-
+        initControls()
         binding.ivPlayPauseDetail.setOnClickListener {
             curPlayingSong?.let {
                 mainViewModel.playOrToggleSong(it, true)
@@ -62,7 +67,7 @@ class SongFragment : Fragment(R.layout.fragment_song) {
 
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if(fromUser) {
+                if (fromUser) {
                     setCurPlayerTimeToTextView(progress.toLong())
                 }
             }
@@ -99,10 +104,10 @@ class SongFragment : Fragment(R.layout.fragment_song) {
     private fun subscribeToObservers() {
         mainViewModel.mediaItems.observe(viewLifecycleOwner) {
             it?.let { result ->
-                when(result.status) {
+                when (result.status) {
                     SUCCESS -> {
                         result.data?.let { song ->
-                            if(curPlayingSong == null && song.isNotEmpty()) {
+                            if (curPlayingSong == null && song.isNotEmpty()) {
                                 curPlayingSong = song[0]
                                 updateTitleAndSongImage(song[0])
                             }
@@ -113,19 +118,19 @@ class SongFragment : Fragment(R.layout.fragment_song) {
             }
         }
         mainViewModel.curPlayingSong.observe(viewLifecycleOwner) {
-            if(it == null) return@observe
+            if (it == null) return@observe
             curPlayingSong = it.toSong()
             updateTitleAndSongImage(curPlayingSong!!)
         }
         mainViewModel.playbackState.observe(viewLifecycleOwner) {
             playbackState = it
             binding.ivPlayPauseDetail.setImageResource(
-                if(playbackState?.isPlaying == true) R.drawable.ic_pause else R.drawable.ic_play
+                if (playbackState?.isPlaying == true) R.drawable.ic_pause else R.drawable.ic_play
             )
             binding.seekBar.progress = it?.position?.toInt() ?: 0
         }
         songViewModel.curPlayerPosition.observe(viewLifecycleOwner) {
-            if(shouldUpdateSeekbar) {
+            if (shouldUpdateSeekbar) {
                 binding.seekBar.progress = it.toInt()
                 setCurPlayerTimeToTextView(it)
             }
@@ -147,7 +152,37 @@ class SongFragment : Fragment(R.layout.fragment_song) {
 
         _binding = null
     }
+
+    /** controlling volume*/
+    private fun initControls() {
+        try {
+            val audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager?
+            if (audioManager != null) {
+                binding.volumeSeekBar!!.max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+
+                binding.volumeSeekBar!!.progress = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+                binding.volumeSeekBar!!.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                    override fun onStopTrackingTouch(arg0: SeekBar) {}
+                    override fun onStartTrackingTouch(arg0: SeekBar) {}
+                    override fun onProgressChanged(arg0: SeekBar, progress: Int, arg2: Boolean) {
+                        audioManager.setStreamVolume(
+                            AudioManager.STREAM_MUSIC,
+                            progress, 0
+                        )
+                    }
+                })
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 }
+
+
+
+
+
 
 
 

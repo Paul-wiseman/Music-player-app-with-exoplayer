@@ -14,7 +14,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.plcoding.spotifycloneyt.R
 import com.plcoding.spotifycloneyt.adapters.SwipeSongAdapter
 import com.plcoding.spotifycloneyt.data.entities.Song
+import com.plcoding.spotifycloneyt.data.local.entities.SongEntity
 import com.plcoding.spotifycloneyt.databinding.ActivityMainBinding
+import com.plcoding.spotifycloneyt.exoplayer.currentPlaybackPosition
 import com.plcoding.spotifycloneyt.exoplayer.isPlaying
 import com.plcoding.spotifycloneyt.exoplayer.toSong
 import com.plcoding.spotifycloneyt.other.Status.*
@@ -64,8 +66,9 @@ class MainActivity : AppCompatActivity() {
         })
 
         binding.ivPlayPause.setOnClickListener {
-            curPlayingSong?.let {
-                mainViewModel.playOrToggleSong(it, true)
+            curPlayingSong?.let {song ->
+                mainViewModel.saveSong(SongEntity(song))
+                mainViewModel.playOrToggleSong(song, true)
             }
         }
 
@@ -85,15 +88,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hideBottomBar() {
-        binding.ivCurSongImage.isVisible = false
-        binding.vpSong.isVisible = false
-        binding.ivPlayPause.isVisible = false
+        binding.swipeItems.isVisible = false
     }
 
     private fun showBottomBar() {
-        binding.ivCurSongImage.isVisible = true
-        binding.vpSong.isVisible = true
-        binding.ivPlayPause.isVisible = true
+        binding.swipeItems.isVisible = true
     }
 
     private fun switchViewPagerToCurrentSong(song: Song) {
@@ -123,6 +122,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+//        mainViewModel.playbackState.observe(this){
+////           val pos: Long? = it?.currentPlaybackPosition
+//        }
+
         mainViewModel.curPlayingSong.observe(this) {
             if (it == null) return@observe
 

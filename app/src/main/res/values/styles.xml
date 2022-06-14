@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/purple</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/purple</item>
         <item name="android:textViewStyle">@style/PoppinsTextStyle</item>
@@ -30,5 +30,11 @@
     <style name="PoppinsTextStyle" parent="android:Widget.TextView">
         <item name="fontFamily">@font/poppins_regular</item>
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="MySeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressBackgroundTint">#E9B171</item>
+        <item name="android:progressTint">#E9B171</item>
+        <item name="android:colorControlActivated">#E9B171</item>
     </style>
 </resources>

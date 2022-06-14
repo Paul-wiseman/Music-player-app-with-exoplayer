@@ -16,7 +16,7 @@ class SongAdapter @Inject constructor(
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
         val song = songs[position]
         holder.itemView.apply {
-            this.findViewById<MaterialTextView>(R.id.tvPrimary).text =  song.title
+            this.findViewById<MaterialTextView>(R.id.tvPrimary).text =  song.artistName
             this.findViewById<MaterialTextView>(R.id.tvSecondary).text = song.subtitle
             glide.load(song.imageUrl).into(this.findViewById(R.id.ivItemImage))
             setOnClickListener {
